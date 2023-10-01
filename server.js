@@ -1,6 +1,7 @@
 const express = require('express');
 const _ = require('lodash');
 // const bodyParser = require("body-parser");
+const fetch = require("node-fetch");
 
 // Route Decleartion
 const app = express();

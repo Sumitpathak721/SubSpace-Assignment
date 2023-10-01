@@ -1,7 +1,6 @@
 const express = require('express');
 const _ = require('lodash');
-// const bodyParser = require("body-parser");
-const fetch = require("node-fetch");
+const axios = require("axios");
 
 // Route Decleartion
 const app = express();
@@ -17,13 +16,12 @@ app.get("/",(req,res)=>{
 
 app.get("/api/blog-stats",async(req,res)=>{
     try{
-        let blogs = await fetch("https://intent-kit-16.hasura.app/api/rest/blogs",{
-            method:"get",
+        let blogs = await axios.get("https://intent-kit-16.hasura.app/api/rest/blogs", {
             headers:{
-                "x-hasura-admin-secret": "32qR4KmXOIpsGPQKMqEJHGJS27G5s7HdSKO3gdtQd2kv5e852SiYwWNfxkZOBuQ6"
-            }
-        });
-        blogs = (await blogs.json()).blogs;
+                'x-hasura-admin-secret': '32qR4KmXOIpsGPQKMqEJHGJS27G5s7HdSKO3gdtQd2kv5e852SiYwWNfxkZOBuQ6'
+            },
+        })
+        blogs = blogs.data.blogs;
         const resData = {
             totalBlogs:blogs.length,
             totalPrivacyBlogs:_.size(_.filter(blogs, (blog) => {
@@ -45,13 +43,12 @@ app.get("/api/blog-search",async(req,res)=>{
         if(!query){
             return res.status(422).json({status:422,message:"insufficient parameter"})
         }
-        let blogs = await fetch("https://intent-kit-16.hasura.app/api/rest/blogs",{
-            method:"get",
+        let blogs = await axios.get("https://intent-kit-16.hasura.app/api/rest/blogs",{
             headers:{
                 "x-hasura-admin-secret": "32qR4KmXOIpsGPQKMqEJHGJS27G5s7HdSKO3gdtQd2kv5e852SiYwWNfxkZOBuQ6"
             }
         });
-        blogs = (await blogs.json()).blogs;
+        blogs = blogs.data.blogs;
         const resData = _.filter(blogs, blog =>  _.includes(blog.title.toLowerCase(), query.toLowerCase()));
         res.json({resData});
     }catch(e){

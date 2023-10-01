@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SubSpace</title>
+</head>
+<body>
+    <h1>
+        Below have direct link to Api:
+    </h1>
+    <table>
+        <tr>
+            <h4>1st Get api is:</h4>
+            <a href="/api/blog-stats">/api/blog-stats</a>
+        </tr>
+        <tr>
+            <h4>2nd Get api with query is:</h4>
+            <span>/api/blog-search?query=</span>
+            <input type="text" id="queryAttr" onkeyup="changeLink(this.value)">
+            <button><a href="/api/blog-search" id="queryLink">Search</a></button>
+        </tr>
+    </table>
+</body>
+<script>
+    var changeLink = (value)=>{
+        document.getElementById('queryLink').href = "/api/blog-search?query="+value;
+    }
+</script>
+</html>

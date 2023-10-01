@@ -6,7 +6,14 @@ const _ = require('lodash');
 const app = express();
 const PORT = 3000;
 
+// middleware
+app.set("view engine", "ejs");
+
 // apis
+app.get("/",(req,res)=>{
+    res.render("home.ejs");
+});
+
 app.get("/api/blog-stats",async(req,res)=>{
     try{
         let blogs = await fetch("https://intent-kit-16.hasura.app/api/rest/blogs",{
@@ -34,6 +41,9 @@ app.get("/api/blog-stats",async(req,res)=>{
 app.get("/api/blog-search",async(req,res)=>{
     try{
         const {query} = req.query;
+        if(!query){
+            return res.status(422).json({status:422,message:"insufficient parameter"})
+        }
         let blogs = await fetch("https://intent-kit-16.hasura.app/api/rest/blogs",{
             method:"get",
             headers:{
@@ -47,6 +57,7 @@ app.get("/api/blog-search",async(req,res)=>{
         res.status(500).json({status:500,error:"Internal Server Error"});
     }
 });
+
 
 // blogs.filter(blog => blog.title.toLowerCase().includes('privacy')).length
 
